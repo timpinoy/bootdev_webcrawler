@@ -1,0 +1,13 @@
+{
+  "name": "bootdev_webcrawler",
+  "version": "1.0.0",
+  "description": "Webcrawler project from boot.dev",
+  "type": "module",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "author": "Tim Pinoy",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
