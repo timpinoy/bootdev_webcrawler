@@ -21,15 +21,37 @@ function getURLsFromHTML(htmlBody, baseUrl) {
   return urlArray;
 }
 
-async function crawlPage(currentURL) {
-  const response = await fetch(currentURL);
+async function fetchPage(url) {
+  const response = await fetch(url);
   if (response.status >= 400) {
     console.log(`Error status code: ${response.status}`);
-    return;
+    return [];
   } else {
     const body = await response.text();
-    console.log(body);
+    return getURLsFromHTML(body, url);
   }
+}
+
+async function crawlPage(baseURL, currentURL = baseURL, pages = {}) {
+  const normalizedCurrentURL = normalizeURL(currentURL);
+  const baseDomain = (new URL(baseURL)).host;
+  const currentDomain = (new URL(currentURL)).host;
+  if (baseDomain !== currentDomain) {
+    return pages;
+  }
+  if (normalizedCurrentURL in pages) {
+    pages[normalizedCurrentURL] += 1;
+    return pages;
+  } else {
+    pages[normalizedCurrentURL] = 1;
+  }
+  
+  const urls = await fetchPage(currentURL);
+  for (const url of urls) {
+    pages = await crawlPage(baseURL, url, pages);
+  }
+
+  return pages;
 }
 
 export { normalizeURL, getURLsFromHTML, crawlPage }
