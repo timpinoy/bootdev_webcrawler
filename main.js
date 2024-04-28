@@ -1,5 +1,6 @@
 import { argv } from "node:process";
 import { crawlPage } from "./crawl.js";
+import { printReport } from "./report.js";
 
 async function main() {
   if (argv.length <= 2) {
@@ -9,8 +10,8 @@ async function main() {
   } else {
     const baseURL = argv[2];
     console.log(`Crawling from ${baseURL}`);;
-    const r = await crawlPage(baseURL);
-    console.log(r);
+    const pages = await crawlPage(baseURL);
+    printReport(pages);
   }
 }
 
