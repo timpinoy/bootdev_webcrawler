@@ -21,4 +21,15 @@ function getURLsFromHTML(htmlBody, baseUrl) {
   return urlArray;
 }
 
-export { normalizeURL, getURLsFromHTML }
+async function crawlPage(currentURL) {
+  const response = await fetch(currentURL);
+  if (response.status >= 400) {
+    console.log(`Error status code: ${response.status}`);
+    return;
+  } else {
+    const body = await response.text();
+    console.log(body);
+  }
+}
+
+export { normalizeURL, getURLsFromHTML, crawlPage }
